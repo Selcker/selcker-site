@@ -30,56 +30,101 @@ const animatedElements = document.querySelectorAll(
     ".service-card, .advantage, .process-card, .pricing-card, .hero-card, .contact-box"
 );
 
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-                observer.unobserve(entry.target);
-            }
-        });
-    },
-    {
-        threshold: 0.15
-    }
-);
+if ("IntersectionObserver" in window) {
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("show");
+
+                    observer.unobserve(entry.target);
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
 
 
-animatedElements.forEach((element) => {
-    element.classList.add("hidden");
-    observer.observe(element);
-});
+    animatedElements.forEach((element) => {
+
+        element.classList.add("hidden");
+
+        observer.observe(element);
+
+    });
+
+} else {
+
+    animatedElements.forEach((element) => {
+        element.classList.add("show");
+    });
+
+}
+
 
 
 /* =========================
    ORDER MODAL
 ========================= */
 
-const orderModal = document.getElementById("orderModal");
-const orderModalOverlay = document.getElementById("orderModalOverlay");
-const orderModalClose = document.getElementById("orderModalClose");
+const orderModal =
+    document.getElementById("orderModal");
 
-const orderForm = document.getElementById("orderForm");
+const orderModalOverlay =
+    document.getElementById("orderModalOverlay");
 
-const orderName = document.getElementById("orderName");
-const orderContact = document.getElementById("orderContact");
-const orderService = document.getElementById("orderService");
-const orderDescription = document.getElementById("orderDescription");
+const orderModalClose =
+    document.getElementById("orderModalClose");
 
-const orderSubmit = document.getElementById("orderSubmit");
-const orderStatus = document.getElementById("orderStatus");
 
-const websiteField = document.getElementById("website");
+const orderForm =
+    document.getElementById("orderForm");
+
+
+const orderName =
+    document.getElementById("orderName");
+
+const orderContact =
+    document.getElementById("orderContact");
+
+const orderService =
+    document.getElementById("orderService");
+
+const orderDescription =
+    document.getElementById("orderDescription");
+
+
+const orderSubmit =
+    document.getElementById("orderSubmit");
+
+const orderStatus =
+    document.getElementById("orderStatus");
+
+
+const websiteField =
+    document.getElementById("website");
+
 
 
 function openOrderModal(service = "") {
+
     if (!orderModal) {
+
         console.error(
-            "Ошибка: #orderModal не найден в index.html"
+            "Не найден элемент #orderModal"
         );
 
         return;
     }
+
 
     orderModal.classList.add("active");
 
@@ -87,8 +132,11 @@ function openOrderModal(service = "") {
 
 
     if (orderStatus) {
+
         orderStatus.textContent = "";
-        orderStatus.className = "order-status";
+
+        orderStatus.className =
+            "order-status";
     }
 
 
@@ -97,52 +145,68 @@ function openOrderModal(service = "") {
     }
 
 
-    if (service === "site") {
+    if (service === "site" && orderService) {
         orderService.value = "💻 Сайт";
     }
 
-    if (service === "bot") {
+
+    if (service === "bot" && orderService) {
         orderService.value = "🤖 Telegram-бот";
     }
 
-    if (service === "other") {
+
+    if (service === "other" && orderService) {
         orderService.value = "⚙️ Інше";
     }
 
 
     setTimeout(() => {
+
         if (orderName) {
             orderName.focus();
         }
+
     }, 300);
+
 }
 
 
+
 function closeOrderModal() {
+
     if (!orderModal) {
         return;
     }
 
+
     orderModal.classList.remove("active");
 
     document.body.style.overflow = "";
+
 }
 
 
+
 if (orderModalClose) {
+
     orderModalClose.addEventListener(
         "click",
         closeOrderModal
     );
+
 }
 
 
+
 if (orderModalOverlay) {
+
     orderModalOverlay.addEventListener(
         "click",
         closeOrderModal
     );
+
 }
+
 
 
 document.addEventListener(
@@ -151,13 +215,17 @@ document.addEventListener(
 
         if (
             event.key === "Escape" &&
-            orderModal?.classList.contains("active")
+            orderModal &&
+            orderModal.classList.contains("active")
         ) {
+
             closeOrderModal();
+
         }
 
     }
 );
+
 
 
 /* =========================
@@ -195,20 +263,32 @@ orderButtons.forEach((button) => {
             event.preventDefault();
 
 
-            if (text.includes("сайт")) {
+            if (
+                text.includes("сайт")
+            ) {
+
                 openOrderModal("site");
+
                 return;
             }
 
 
-            if (text.includes("бот")) {
+            if (
+                text.includes("бот")
+            ) {
+
                 openOrderModal("bot");
+
                 return;
             }
 
 
-            if (text.includes("тариф")) {
+            if (
+                text.includes("тариф")
+            ) {
+
                 openOrderModal("other");
+
                 return;
             }
 
@@ -219,6 +299,7 @@ orderButtons.forEach((button) => {
     );
 
 });
+
 
 
 /* =========================
@@ -235,21 +316,23 @@ if (orderForm) {
 
 
             const name =
-                orderName.value.trim();
+                orderName?.value.trim() || "";
+
 
             const contact =
-                orderContact.value.trim();
+                orderContact?.value.trim() || "";
+
 
             const service =
-                orderService.value;
+                orderService?.value || "";
+
 
             const description =
-                orderDescription.value.trim();
+                orderDescription?.value.trim() || "";
+
 
             const website =
-                websiteField
-                    ? websiteField.value.trim()
-                    : "";
+                websiteField?.value.trim() || "";
 
 
             if (
@@ -266,7 +349,6 @@ if (orderForm) {
                     "order-status error";
 
                 return;
-
             }
 
 
@@ -280,6 +362,7 @@ if (orderForm) {
 
             orderStatus.textContent =
                 "Відправляємо заявку...";
+
 
             orderStatus.className =
                 "order-status";
@@ -299,25 +382,41 @@ if (orderForm) {
                             },
 
                             body: JSON.stringify({
+
                                 name,
+
                                 contact,
+
                                 service,
+
                                 description,
+
                                 website
+
                             })
                         }
                     );
 
 
-                const result =
-                    await response.json();
+                let result = {};
+
+                try {
+
+                    result =
+                        await response.json();
+
+                } catch {
+
+                    result = {};
+
+                }
 
 
                 if (!response.ok) {
 
                     throw new Error(
                         result.message ||
-                        "Не вдалося відправити заявку."
+                        `Ошибка сервера: ${response.status}`
                     );
 
                 }
@@ -325,6 +424,7 @@ if (orderForm) {
 
                 orderStatus.textContent =
                     `✅ Заявку успішно відправлено! Номер: #${result.orderId}`;
+
 
                 orderStatus.className =
                     "order-status success";
@@ -334,20 +434,23 @@ if (orderForm) {
 
 
                 setTimeout(() => {
+
                     closeOrderModal();
+
                 }, 2000);
 
 
             } catch (error) {
 
                 console.error(
-                    "Помилка:",
+                    "Ошибка отправки:",
                     error
                 );
 
 
                 orderStatus.textContent =
                     "❌ Не вдалося відправити заявку. Спробуйте ще раз.";
+
 
                 orderStatus.className =
                     "order-status error";
