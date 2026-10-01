@@ -683,4 +683,24 @@ if (orderForm) {
         }
     );
 
+} function createSakuraPetal() {
+    const petal = document.createElement("div");
+
+    petal.className = "sakura-petal";
+
+    petal.style.left = Math.random() * 100 + "vw";
+
+    petal.style.animationDuration =
+        6 + Math.random() * 7 + "s";
+
+    petal.style.transform =
+        `scale(${0.6 + Math.random() * 0.8})`;
+
+    document.body.appendChild(petal);
+
+    setTimeout(() => {
+        petal.remove();
+    }, 14000);
 }
+
+setInterval(createSakuraPetal, 700);
