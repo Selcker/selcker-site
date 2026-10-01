@@ -5,11 +5,10 @@ if (menuButton && nav) {
     menuButton.addEventListener("click", () => {
         nav.classList.toggle("active");
 
-        if (nav.classList.contains("active")) {
-            menuButton.textContent = "✕";
-        } else {
-            menuButton.textContent = "☰";
-        }
+        menuButton.textContent =
+            nav.classList.contains("active")
+                ? "✕"
+                : "☰";
     });
 }
 
@@ -45,13 +44,16 @@ const observer = new IntersectionObserver(
     }
 );
 
+
 animatedElements.forEach((element) => {
     element.classList.add("hidden");
     observer.observe(element);
 });
 
 
-/* ORDER MODAL */
+/* =========================
+   ORDER MODAL
+========================= */
 
 const orderModal = document.getElementById("orderModal");
 const orderModalOverlay = document.getElementById("orderModalOverlay");
@@ -63,14 +65,19 @@ const orderName = document.getElementById("orderName");
 const orderContact = document.getElementById("orderContact");
 const orderService = document.getElementById("orderService");
 const orderDescription = document.getElementById("orderDescription");
-const orderStatus = document.getElementById("orderStatus");
+
 const orderSubmit = document.getElementById("orderSubmit");
+const orderStatus = document.getElementById("orderStatus");
 
 const websiteField = document.getElementById("website");
 
 
 function openOrderModal(service = "") {
     if (!orderModal) {
+        console.error(
+            "Ошибка: #orderModal не найден в index.html"
+        );
+
         return;
     }
 
@@ -78,10 +85,17 @@ function openOrderModal(service = "") {
 
     document.body.style.overflow = "hidden";
 
-    orderStatus.textContent = "";
-    orderStatus.className = "order-status";
 
-    orderSubmit.disabled = false;
+    if (orderStatus) {
+        orderStatus.textContent = "";
+        orderStatus.className = "order-status";
+    }
+
+
+    if (orderSubmit) {
+        orderSubmit.disabled = false;
+    }
+
 
     if (service === "site") {
         orderService.value = "💻 Сайт";
@@ -95,8 +109,11 @@ function openOrderModal(service = "") {
         orderService.value = "⚙️ Інше";
     }
 
+
     setTimeout(() => {
-        orderName.focus();
+        if (orderName) {
+            orderName.focus();
+        }
     }, 300);
 }
 
@@ -109,147 +126,238 @@ function closeOrderModal() {
     orderModal.classList.remove("active");
 
     document.body.style.overflow = "";
-
-    orderStatus.textContent = "";
-    orderStatus.className = "order-status";
 }
 
 
 if (orderModalClose) {
-    orderModalClose.addEventListener("click", closeOrderModal);
+    orderModalClose.addEventListener(
+        "click",
+        closeOrderModal
+    );
 }
+
 
 if (orderModalOverlay) {
-    orderModalOverlay.addEventListener("click", closeOrderModal);
+    orderModalOverlay.addEventListener(
+        "click",
+        closeOrderModal
+    );
 }
 
 
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        closeOrderModal();
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Escape" &&
+            orderModal?.classList.contains("active")
+        ) {
+            closeOrderModal();
+        }
+
     }
-});
-
-
-const orderLinks = document.querySelectorAll(
-    '.hero-buttons a[href="#contacts"], .pricing-card a[href="#contacts"], .portfolio a[href="#contacts"]'
 );
 
-orderLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-        event.preventDefault();
 
-        const text = link.textContent.toLowerCase();
+/* =========================
+   ORDER BUTTONS
+========================= */
 
-        if (text.includes("сайт")) {
-            openOrderModal("site");
-            return;
-        }
-
-        if (text.includes("бот")) {
-            openOrderModal("bot");
-            return;
-        }
-
-        if (text.includes("тариф")) {
-            openOrderModal("other");
-            return;
-        }
-
-        openOrderModal();
-    });
-});
+const orderButtons =
+    document.querySelectorAll(
+        'a[href="#contacts"]'
+    );
 
 
-if (orderForm) {
-    orderForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
+orderButtons.forEach((button) => {
 
-        const name = orderName.value.trim();
-        const contact = orderContact.value.trim();
-        const service = orderService.value;
-        const description = orderDescription.value.trim();
-        const website = websiteField.value.trim();
-
-        if (!name || !contact || !service || !description) {
-            orderStatus.textContent =
-                "Заповніть усі поля.";
-            orderStatus.className =
-                "order-status error";
-
-            return;
-        }
-
-        if (website) {
-            return;
-        }
-
-        orderSubmit.disabled = true;
-
-        orderStatus.textContent =
-            "Відправляємо заявку...";
-
-        orderStatus.className =
-            "order-status";
+    const text =
+        button.textContent
+            .trim()
+            .toLowerCase();
 
 
-        try {
-            const response = await fetch(
-                "https://telegram-bot-5-9gzp.onrender.com/api/order",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        name,
-                        contact,
-                        service,
-                        description,
-                        website
-                    })
-                }
-            );
+    const isOrderButton =
+        text.includes("замовити") ||
+        text.includes("обрати тариф");
 
 
-            const result = await response.json();
+    if (!isOrderButton) {
+        return;
+    }
 
 
-            if (!response.ok) {
-                throw new Error(
-                    result.message ||
-                    "Не вдалося відправити заявку."
-                );
+    button.addEventListener(
+        "click",
+        (event) => {
+
+            event.preventDefault();
+
+
+            if (text.includes("сайт")) {
+                openOrderModal("site");
+                return;
             }
 
 
-            orderStatus.textContent =
-                "✅ Заявку успішно відправлено!";
-
-            orderStatus.className =
-                "order-status success";
-
-
-            orderForm.reset();
+            if (text.includes("бот")) {
+                openOrderModal("bot");
+                return;
+            }
 
 
-            setTimeout(() => {
-                closeOrderModal();
-            }, 1800);
+            if (text.includes("тариф")) {
+                openOrderModal("other");
+                return;
+            }
 
-        } catch (error) {
 
-            console.error(error);
+            openOrderModal();
 
-            orderStatus.textContent =
-                "❌ Не вдалося відправити заявку. Спробуйте ще раз.";
-
-            orderStatus.className =
-                "order-status error";
-
-            orderSubmit.disabled = false;
         }
-    });
+    );
+
+});
+
+
+/* =========================
+   ORDER FORM
+========================= */
+
+if (orderForm) {
+
+    orderForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            const name =
+                orderName.value.trim();
+
+            const contact =
+                orderContact.value.trim();
+
+            const service =
+                orderService.value;
+
+            const description =
+                orderDescription.value.trim();
+
+            const website =
+                websiteField
+                    ? websiteField.value.trim()
+                    : "";
+
+
+            if (
+                !name ||
+                !contact ||
+                !service ||
+                !description
+            ) {
+
+                orderStatus.textContent =
+                    "Заповніть усі поля.";
+
+                orderStatus.className =
+                    "order-status error";
+
+                return;
+
+            }
+
+
+            if (website) {
+                return;
+            }
+
+
+            orderSubmit.disabled = true;
+
+
+            orderStatus.textContent =
+                "Відправляємо заявку...";
+
+            orderStatus.className =
+                "order-status";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://telegram-bot-5-9gzp.onrender.com/api/order",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                name,
+                                contact,
+                                service,
+                                description,
+                                website
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.message ||
+                        "Не вдалося відправити заявку."
+                    );
+
+                }
+
+
+                orderStatus.textContent =
+                    `✅ Заявку успішно відправлено! Номер: #${result.orderId}`;
+
+                orderStatus.className =
+                    "order-status success";
+
+
+                orderForm.reset();
+
+
+                setTimeout(() => {
+                    closeOrderModal();
+                }, 2000);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Помилка:",
+                    error
+                );
+
+
+                orderStatus.textContent =
+                    "❌ Не вдалося відправити заявку. Спробуйте ще раз.";
+
+                orderStatus.className =
+                    "order-status error";
+
+
+                orderSubmit.disabled = false;
+
+            }
+
+        }
+    );
+
 }
