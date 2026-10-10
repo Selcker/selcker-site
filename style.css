@@ -1,10 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
-
-/* =========================================
-   SELCKER
-   Dark / Purple / Sakura
-   ========================================= */
-
 :root {
     --bg: #09090d;
     --bg-soft: #0e0e14;
@@ -26,10 +20,6 @@
     --container: 1180px;
     --radius: 24px;
 }
-
-/* =========================================
-   RESET
-   ========================================= */
 
 * {
     margin: 0;
@@ -109,18 +99,12 @@ img {
     display: block;
 }
 
-/* =========================================
-   CONTAINER
-   ========================================= */
 
 .container {
     width: min(var(--container), calc(100% - 48px));
     margin: 0 auto;
 }
 
-/* =========================================
-   HEADER
-   ========================================= */
 
 .header {
     position: sticky;
@@ -225,10 +209,6 @@ img {
 
     font-size: 20px;
 }
-
-/* =========================================
-   HERO
-   ========================================= */
 
 .hero {
     position: relative;
@@ -345,9 +325,6 @@ img {
     flex-wrap: wrap;
 }
 
-/* =========================================
-   BUTTONS
-   ========================================= */
 
 .button {
     display: inline-flex;
@@ -408,11 +385,6 @@ img {
     box-shadow:
         0 0 25px rgba(141, 128, 255, 0.1);
 }
-
-/* =========================================
-   HERO CARD
-   ========================================= */
-
 .hero-card {
     position: relative;
 
@@ -504,10 +476,6 @@ img {
     font-size: 16px;
 }
 
-/* =========================================
-   SECTIONS
-   ========================================= */
-
 .services,
 .advantages,
 .process,
@@ -532,10 +500,6 @@ img {
 
     margin-bottom: 55px;
 }
-
-/* =========================================
-   SERVICES
-   ========================================= */
 
 .services-grid {
     display: grid;
@@ -652,10 +616,6 @@ img {
     margin-top: 25px;
 }
 
-/* =========================================
-   ADVANTAGES
-   ========================================= */
-
 .advantages-grid {
     display: grid;
 
@@ -692,11 +652,6 @@ img {
     font-size: 14px;
     line-height: 1.7;
 }
-
-/* =========================================
-   PROCESS
-   ========================================= */
-
 .process-grid {
     display: grid;
 
@@ -752,10 +707,6 @@ img {
 
     font-size: 14px;
 }
-
-/* =========================================
-   PRICING
-   ========================================= */
 
 .pricing-grid {
     display: grid;
@@ -864,10 +815,6 @@ img {
     margin: 25px 0;
 }
 
-/* =========================================
-   PORTFOLIO
-   ========================================= */
-
 .portfolio {
     background: #0c0c11;
 }
@@ -880,10 +827,6 @@ img {
 .portfolio .service-card {
     min-height: 320px;
 }
-
-/* =========================================
-   CONTACTS
-   ========================================= */
 
 .contact-box {
     position: relative;
@@ -942,12 +885,7 @@ img {
 }
 
 .contact-buttons {
-    position: relative;
-}
-
-/* =========================================
-   FOOTER
-   ========================================= */
+    position: relative;}
 
 .footer {
     padding: 50px 0;
@@ -977,10 +915,6 @@ img {
 
     color: #666571;
 }
-
-/* =========================================
-   ORDER MODAL
-   ========================================= */
 
 .order-modal {
     position: fixed;
@@ -1241,10 +1175,6 @@ select {
     pointer-events: none !important;
 }
 
-/* =========================================
-   SAKURA PETALS
-   ========================================= */
-
 .sakura-petal {
     position: fixed;
 
@@ -1303,10 +1233,6 @@ select {
     }
 }
 
-/* =========================================
-   SCROLLBAR
-   ========================================= */
-
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -1322,12 +1248,7 @@ select {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--purple-dark);
-}
-
-/* =========================================
-   RESPONSIVE
-   ========================================= */
+    background: var(--purple-dark);}
 
 @media (max-width: 1000px) {
 
